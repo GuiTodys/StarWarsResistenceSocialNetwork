@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.EnumMap;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,5 +20,5 @@ public class Rebel {
     private Integer age;
     private Gender gender;
     private Long headquarterId;
-    private EnumMap<Item, Integer> inventory;
+    private List<Item> inventory;
 }
