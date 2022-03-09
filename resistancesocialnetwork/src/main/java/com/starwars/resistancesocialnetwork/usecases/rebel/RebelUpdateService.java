@@ -1,5 +1,6 @@
 package com.starwars.resistancesocialnetwork.usecases.rebel;
 
+import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
 import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
@@ -16,12 +17,10 @@ public class RebelUpdateService {
   private final HeadQuartersPersistenceGateway headQuartersPersistence;
 
   public Rebel execute(Long id, Rebel rebel) throws RebelNotFoundException, HeadquarterNotFoundException {
-    if(!headQuartersPersistence.existById(rebel.getHeadquarterId())){
-      throw new HeadquarterNotFoundException();
-    }
+    Headquarter headquarter = headQuartersPersistence.findById(rebel.getHeadquarterId()).orElseThrow(HeadquarterNotFoundException::new);
     Rebel result = rebelPersistence.findById(id).orElseThrow(RebelNotFoundException::new);
     BeanUtils.copyProperties(rebel, result, "id", "inventory");
-    return rebelPersistence.save(result);
+    return rebelPersistence.save(result, headquarter);
   }
 
 
