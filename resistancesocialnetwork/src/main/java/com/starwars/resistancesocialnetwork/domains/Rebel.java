@@ -7,7 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+<<<<<<< Updated upstream
 import java.util.EnumMap;
+=======
+import java.util.List;
+>>>>>>> Stashed changes
 
 @Data
 @NoArgsConstructor
