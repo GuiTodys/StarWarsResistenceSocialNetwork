@@ -6,12 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-<<<<<<< Updated upstream
 import java.util.EnumMap;
-=======
 import java.util.List;
->>>>>>> Stashed changes
+
+
 
 @Data
 @NoArgsConstructor
@@ -23,5 +21,5 @@ public class Rebel {
     private Integer age;
     private Gender gender;
     private Long headquarterId;
-    private EnumMap<Item, Integer> inventory;
+    private List<Item> inventory;
 }

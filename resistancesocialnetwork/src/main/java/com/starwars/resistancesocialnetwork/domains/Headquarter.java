@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Headquarter {
-    private Integer id;
+    private Long id;
     private String name;
     private Point location;
     private List<Rebel> rebels;
