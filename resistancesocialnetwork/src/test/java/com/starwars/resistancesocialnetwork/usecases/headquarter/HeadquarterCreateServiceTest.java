@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.hamcrest.MockitoHamcrest;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -17,7 +16,8 @@ class HeadquarterCreateServiceTest {
 
     @Mock
     HeadQuartersPersistenceGateway headQuartersPersistenceGateway;
-    @InjectMocks HeadquarterCreateService createService;
+    @InjectMocks
+    HeadquarterCreateService createService;
 
     @Test
     void whenInformedAValidHeadQuarterThenItsShouldBeCreated() {

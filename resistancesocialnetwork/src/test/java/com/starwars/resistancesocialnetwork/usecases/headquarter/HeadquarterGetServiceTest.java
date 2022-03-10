@@ -4,7 +4,6 @@ import com.starwars.resistancesocialnetwork.builders.domain.HeadQuarterDomainBui
 import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
 import com.starwars.resistancesocialnetwork.gateways.persistance.HeadQuartersPersistenceGateway;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -16,9 +16,9 @@ public class HeadquarterGetService {
 
   private final HeadQuartersPersistenceGateway headQuartersPersistence;
 
-  public Headquarter getById(Long id) throws HeadquarterNotFoundException {
+  public Headquarter getById(Long id){
     Optional<Headquarter> result = headQuartersPersistence.findById(id);
-    return result.orElseThrow(HeadquarterNotFoundException::new);
+    return result.orElseThrow(() -> HeadquarterNotFoundException.builder().message("Headquarter not found by" + id).build());
   }
 
   public Page<Headquarter> getAll(Pageable page) {

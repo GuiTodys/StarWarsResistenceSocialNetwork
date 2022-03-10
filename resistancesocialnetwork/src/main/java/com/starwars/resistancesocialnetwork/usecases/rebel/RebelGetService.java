@@ -17,7 +17,7 @@ public class RebelGetService {
 
   public Rebel getById(Long id) throws RebelNotFoundException {
     Optional<Rebel> result = rebelPersistence.findById(id);
-    return result.orElseThrow(RebelNotFoundException::new);
+    return result.orElseThrow(() -> RebelNotFoundException.builder().message("Rebel not found by" + id).build());
   }
 
   public Page<Rebel> getAll(Pageable page) {

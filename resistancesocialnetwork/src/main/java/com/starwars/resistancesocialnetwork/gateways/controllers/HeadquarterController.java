@@ -36,8 +36,7 @@ public class HeadquarterController {
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public HeadquarterResponse getHeadquarterById(@PathVariable("id") Long id)
-      throws HeadquarterNotFoundException {
+  public HeadquarterResponse getHeadquarterById(@PathVariable("id") Long id){
     Headquarter foundById = getService.getById(id);
     return headquarterResponseMapper.toResponse(foundById);
   }
@@ -69,8 +68,7 @@ public class HeadquarterController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public HeadquarterResponse updateHeadquarter(
-      @PathVariable("id") Long id, @Valid @RequestBody HeadquarterRequest headquarterRequest)
-      throws HeadquarterNotFoundException {
+      @PathVariable("id") Long id, @Valid @RequestBody HeadquarterRequest headquarterRequest){
     Headquarter headquarter = headquarterRequestMapper.toDomain(headquarterRequest);
     Headquarter headquarterResponse = updateService.execute(id, headquarter);
     return headquarterResponseMapper.toResponse(headquarterResponse);
@@ -78,7 +76,7 @@ public class HeadquarterController {
 
   @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteById(@PathVariable("id") Long id) throws HeadquarterNotFoundException {
+  public void deleteById(@PathVariable("id") Long id){
     deleteService.execute(id);
   }
 }

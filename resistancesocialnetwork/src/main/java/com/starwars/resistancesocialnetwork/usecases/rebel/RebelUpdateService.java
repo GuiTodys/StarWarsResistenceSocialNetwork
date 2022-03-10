@@ -16,9 +16,10 @@ public class RebelUpdateService {
   private final RebelPersistenceGateway rebelPersistence;
   private final HeadQuartersPersistenceGateway headQuartersPersistence;
 
-  public Rebel execute(Long id, Rebel rebel) throws RebelNotFoundException, HeadquarterNotFoundException {
-    Headquarter headquarter = headQuartersPersistence.findById(rebel.getHeadquarterId()).orElseThrow(HeadquarterNotFoundException::new);
-    Rebel result = rebelPersistence.findById(id).orElseThrow(RebelNotFoundException::new);
+  public Rebel execute(Long id, Rebel rebel){
+    Long headquarterId = rebel.getHeadquarterId();
+    Headquarter headquarter = headQuartersPersistence.findById(headquarterId).orElseThrow(() -> HeadquarterNotFoundException.builder().message("Headquarter not found by" + headquarterId).build());
+    Rebel result = rebelPersistence.findById(id).orElseThrow(() -> RebelNotFoundException.builder().message("Rebel not found by" + id).build());
     BeanUtils.copyProperties(rebel, result, "id", "inventory");
     return rebelPersistence.save(result, headquarter);
   }

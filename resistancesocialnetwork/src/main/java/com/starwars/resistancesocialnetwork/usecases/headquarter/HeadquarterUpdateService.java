@@ -13,8 +13,8 @@ public class HeadquarterUpdateService {
 
   private final HeadQuartersPersistenceGateway headQuartersPersistence;
 
-  public Headquarter execute(Long id, Headquarter headquarter) throws HeadquarterNotFoundException {
-    Headquarter result = headQuartersPersistence.findById(id).orElseThrow(HeadquarterNotFoundException::new);
+  public Headquarter execute(Long id, Headquarter headquarter){
+    Headquarter result = headQuartersPersistence.findById(id).orElseThrow(() -> HeadquarterNotFoundException.builder().message("Headquarter not found by" + id).build());
     BeanUtils.copyProperties(headquarter, result, "id", "rebels");
     return headQuartersPersistence.save(result);
   }

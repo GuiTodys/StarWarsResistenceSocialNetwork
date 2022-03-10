@@ -35,7 +35,7 @@ public class RebelController {
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public RebelResponse getRebelById(@PathVariable("id") Long id) throws RebelNotFoundException {
+  public RebelResponse getRebelById(@PathVariable("id") Long id){
     Rebel foundById = rebelGetService.getById(id);
     return rebelResponseMapper.toResponse(foundById);
   }
@@ -54,8 +54,7 @@ public class RebelController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public RebelResponse createRebel(@Valid @RequestBody RebelRequest rebelRequest)
-      throws HeadquarterNotFoundException {
+  public RebelResponse createRebel(@Valid @RequestBody RebelRequest rebelRequest){
     Rebel rebel = rebelRequestMapper.toDomain(rebelRequest);
     Rebel saved = rebelCreateService.execute(rebel);
     return rebelResponseMapper.toResponse(saved);
@@ -67,8 +66,7 @@ public class RebelController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public RebelResponse updateRebel(
-      @PathVariable("id") Long id, @RequestBody RebelRequest rebelRequest)
-      throws RebelNotFoundException, HeadquarterNotFoundException {
+      @PathVariable("id") Long id, @RequestBody RebelRequest rebelRequest){
     Rebel rebel = rebelRequestMapper.toDomain(rebelRequest);
     Rebel updated = rebelUpdateService.execute(id, rebel);
     return rebelResponseMapper.toResponse(updated);
@@ -76,7 +74,7 @@ public class RebelController {
 
   @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteById(@PathVariable("id") Long id) throws RebelNotFoundException {
+  public void deleteById(@PathVariable("id") Long id){
     rebelDeleteService.execute(id);
   }
 }

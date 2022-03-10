@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 public class HeadquarterDeleteService {
   private final HeadQuartersPersistenceGateway headQuartersPersistence;
 
-  public void execute(Long id) throws HeadquarterNotFoundException {
+  public void execute(Long id){
     if (!headQuartersPersistence.existById(id)) {
-      throw new HeadquarterNotFoundException();
+      throw HeadquarterNotFoundException.builder().message("Headquarter not found by" + id).build();
     }
     headQuartersPersistence.deleteById(id);
   }
