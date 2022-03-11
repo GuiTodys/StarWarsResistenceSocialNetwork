@@ -20,4 +20,5 @@ public class RebelResponse {
     private Gender gender;
     private Long headquarterId;
     private List<Item> inventory;
+    private Boolean traitor;
 }
