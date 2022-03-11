@@ -3,7 +3,6 @@ package com.starwars.resistancesocialnetwork.usecases.rebel;
 import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
-import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
 import com.starwars.resistancesocialnetwork.gateways.persistance.HeadQuartersPersistenceGateway;
 import com.starwars.resistancesocialnetwork.gateways.persistance.RebelPersistenceGateway;
 import lombok.RequiredArgsConstructor;

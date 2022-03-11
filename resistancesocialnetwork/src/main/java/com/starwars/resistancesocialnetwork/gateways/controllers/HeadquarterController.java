@@ -1,7 +1,6 @@
 package com.starwars.resistancesocialnetwork.gateways.controllers;
 
 import com.starwars.resistancesocialnetwork.domains.Headquarter;
-import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
 import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.request.HeadquarterRequestMapper;
 import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.response.HeadquarterResponseMapper;
 import com.starwars.resistancesocialnetwork.gateways.controllers.request.HeadquarterRequest;
