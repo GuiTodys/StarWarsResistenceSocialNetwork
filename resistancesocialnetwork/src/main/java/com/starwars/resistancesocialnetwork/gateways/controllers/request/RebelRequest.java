@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RebelRequest {
-//    private Long id;
     @NotEmpty
     @Size(min = 2, max = 50)
     @ApiModelProperty(required = true, value="Rebel's name", example = "Luke")
