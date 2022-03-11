@@ -21,6 +21,19 @@ public class Rebel {
     private Gender gender;
     private Long headquarterId;
     private List<Item> inventory;
+    @Builder.Default
     private Integer reports = 0;
+    @Builder.Default
     private Boolean traitor = false;
+
+    public void reportRebel(){
+        this.reports++;
+        this.traitorIdentifier();
+    }
+
+    private void traitorIdentifier(){
+        if (this.reports>=3){
+            this.traitor = true;
+        }
+    }
 }
