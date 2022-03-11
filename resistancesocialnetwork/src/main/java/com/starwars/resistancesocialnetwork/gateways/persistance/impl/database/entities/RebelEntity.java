@@ -33,9 +33,9 @@ public class RebelEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "REBEL_INVENTORY", nullable = false)
     private List<ItemEntity> inventory;
-    @Column(name = "REBEL_REPORTS", nullable = false)
-    private Integer reports = 0;
-    @Column(name = "REBEL_TRAITOR_STATUS", nullable = false)
-    private Boolean traitor = false;
+    @Column(name = "REBEL_REPORTS")
+    private Integer reports;
+    @Column(name = "REBEL_TRAITOR_STATUS")
+    private Boolean traitor;
 
 }
