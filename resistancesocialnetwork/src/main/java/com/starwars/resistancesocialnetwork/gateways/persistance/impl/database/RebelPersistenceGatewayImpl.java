@@ -30,6 +30,13 @@ public class RebelPersistenceGatewayImpl implements RebelPersistenceGateway {
     }
 
     @Override
+    public Rebel saveVerifiedRebel(Rebel rebel) {
+        RebelEntity rebelEntity = rebelEntityMapper.toEntity(rebel);
+        RebelEntity saved = rebelRepository.save(rebelEntity);
+        return rebelEntityMapper.toDomain(saved);
+    }
+
+    @Override
     public Optional<Rebel> findById(Long id) {
         Optional<RebelEntity> found = rebelRepository.findById(id);
         return found.map(rebelEntityMapper::toDomain);

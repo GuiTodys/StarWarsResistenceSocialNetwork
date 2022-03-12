@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface RebelPersistenceGateway {
     Rebel save(Rebel rebel, Headquarter headquarter);
+    Rebel saveVerifiedRebel(Rebel rebel);
     Optional<Rebel> findById(Long id);
     boolean existById(Long id);
     Page<Rebel> findAll(Pageable page);

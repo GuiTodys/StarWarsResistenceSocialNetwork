@@ -13,13 +13,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RebelReportService{
     private final RebelPersistenceGateway rebelPersistence;
-    private final HeadQuartersPersistenceGateway headQuartersPersistence;
 
     public Rebel execute(Long id){
-        Rebel foundRebel = rebelPersistence.findById(id).orElseThrow(()->RebelNotFoundException.builder().message("Rebel not found by" + id).build());
-        Long headquarterId = foundRebel.getHeadquarterId();
-        Headquarter headquarter = headQuartersPersistence.findById(headquarterId).orElseThrow(()-> HeadquarterNotFoundException.builder().message("Headquarter not found by" + headquarterId).build());
+        Rebel foundRebel = rebelPersistence.findById(id)
+                .orElseThrow(()->RebelNotFoundException.builder().message("Rebel not found by id: " + id).build());
         foundRebel.reportRebel();
-        return rebelPersistence.save(foundRebel, headquarter);
+        return rebelPersistence.saveVerifiedRebel(foundRebel);
     }
 }

@@ -74,10 +74,11 @@ public class RebelController {
     rebelDeleteService.execute(id);
   }
 
-  @PatchMapping(value = "/{id}/report", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PatchMapping(value = "/report/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public RebelResponse reportById(@PathVariable("id") Long id){
     Rebel reportedRebel = rebelReportService.execute(id);
     return rebelResponseMapper.toResponse(reportedRebel);
   }
+
 }

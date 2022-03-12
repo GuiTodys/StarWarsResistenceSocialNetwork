@@ -1,12 +1,12 @@
-package com.starwars.resistancesocialnetwork.domains.enums;
+package com.starwars.resistancesocialnetwork.gateways.controllers.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
-public enum Item {
+@Getter
+public enum ItemRequest {
     WEAPON(4),
     AMMO(3),
     WATER(2),
