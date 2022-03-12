@@ -2,7 +2,7 @@
   "name": "star-wars-resistance-network",
   "buildpacks": [
     {
-      "url": "heroku/maven"
+      "url": "https://github.com/timanovsky/subdir-heroku-buildpack"
     }
   ]
 }
