@@ -1,0 +1,8 @@
+{
+  "name": "star-wars-resistance-network",
+  "buildpacks": [
+    {
+      "url": "heroku/maven"
+    }
+  ]
+}
