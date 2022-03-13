@@ -28,7 +28,7 @@ public class ReportsController {
     private final PercentagesResponseMapper percentagesResponseMapper = PercentagesResponseMapper.INSTANCE;
     private final ItemsPerRebelResponseMapper itemsPerRebelResponseMapper = ItemsPerRebelResponseMapper.INSTANCE;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/generalReports",produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ReportResponse getRebelsReports(){
         Reports percentage= reportsService.execute();
