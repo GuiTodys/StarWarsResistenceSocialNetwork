@@ -11,8 +11,6 @@ import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterDele
 import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterGetService;
 import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterUpdateService;
 import org.assertj.core.api.Assertions;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -34,8 +31,9 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,7 +83,6 @@ class HeadquarterControllerTest {
     void getHeadquarterById_should_return_not_found_when_inform_invalid_id() throws Exception {
         //given
         Headquarter headquarter = HeadQuarterDomainBuilder.builder().build().toDomain();
-
         given(getService.getById(headquarter.getId())).willThrow(HeadquarterNotFoundException.class);
 
         mockMvc.perform(get(API_URL_PATH + "/" + headquarter.getId())
@@ -109,14 +106,98 @@ class HeadquarterControllerTest {
     }
 
     @Test
-    void createHeadquarter() {
+    void createHeadquarter_when_inform_a_valid_headquarter_then_create_it() throws Exception {
+        Headquarter expectedHeadquarterToCreate = HeadQuarterDomainBuilder.builder().build().toDomain();
+        String requestJson = mapper.writeValueAsString(expectedHeadquarterToCreate);
+        given(createService.execute(any(Headquarter.class))).willReturn(expectedHeadquarterToCreate);
+
+        MockHttpServletResponse response = mockMvc.perform(post(API_URL_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse();
+
+        Assertions.assertThat(response.getContentAsString()).isEqualTo(requestJson);
     }
 
     @Test
-    void updateHeadquarter() {
+    void createHeadquarter_when_inform_a_headquarter_without_an_requerid_field_then_given_a_error() throws Exception {
+        Headquarter expectedHeadquarterToUpdate = HeadQuarterDomainBuilder.builder().build().toDomain();
+        expectedHeadquarterToUpdate.setName("");
+
+        String jsonRequest = mapper.writeValueAsString(expectedHeadquarterToUpdate);
+        mockMvc.perform(post(API_URL_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+        ).andExpect(status().isBadRequest());
     }
 
     @Test
-    void deleteById() {
+    void updateHeadquarter_when_inform_a_valid_headquarter_then_update_it() throws Exception {
+        Headquarter expectedHeadquarterToUpdate = HeadQuarterDomainBuilder.builder().build().toDomain();
+        given(updateService.execute(any(Long.class),any(Headquarter.class)))
+                .willReturn(expectedHeadquarterToUpdate);
+        String jsonRequest = mapper.writeValueAsString(expectedHeadquarterToUpdate);
+
+        MockHttpServletResponse response = mockMvc.perform(put(API_URL_PATH + "/" + expectedHeadquarterToUpdate.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+        ).andExpect(status().isOk()).andReturn().getResponse();
+
+        Assertions.assertThat(response.getContentAsString())
+                .isEqualTo(mapper.writeValueAsString(expectedHeadquarterToUpdate));
     }
+
+    @Test
+    void updateHeadquarter_when_inform_a_invalid_headquarter_then_throws_exception() throws Exception {
+        Headquarter expectedHeadquarterToUpdate = HeadQuarterDomainBuilder.builder().build().toDomain();
+        given(updateService.execute(any(Long.class),any(Headquarter.class)))
+                .willThrow(HeadquarterNotFoundException.class);
+        String jsonRequest = mapper.writeValueAsString(expectedHeadquarterToUpdate);
+
+       mockMvc.perform(put(API_URL_PATH + "/" + expectedHeadquarterToUpdate.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateHeadquarter_when_inform_a_headquarter_without_an_requerid_field_then_given_a_error() throws Exception {
+        Headquarter expectedHeadquarterToUpdate = HeadQuarterDomainBuilder.builder().build().toDomain();
+        expectedHeadquarterToUpdate.setName("");
+
+        String jsonRequest = mapper.writeValueAsString(expectedHeadquarterToUpdate);
+        mockMvc.perform(put(API_URL_PATH + "/" + expectedHeadquarterToUpdate.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deleteById_when_inform_a_valid_headquarter_then_delete_it() throws Exception {
+        Headquarter expectedHeadquarterToDelete = HeadQuarterDomainBuilder.builder().build().toDomain();
+        doNothing().when(deleteService).execute(expectedHeadquarterToDelete.getId());
+
+        mockMvc.perform(delete(API_URL_PATH + "/" + expectedHeadquarterToDelete.getId())
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteById_when_inform_a_invalid_headquarter_then_throws_exception() throws Exception {
+        Headquarter expectedHeadquarterToDelete = HeadQuarterDomainBuilder.builder().build().toDomain();
+        doThrow(HeadquarterNotFoundException.class).when(deleteService)
+                .execute(expectedHeadquarterToDelete.getId());
+        mockMvc.perform(delete(API_URL_PATH + "/" + expectedHeadquarterToDelete.getId())
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
+
+
+
+
 }
