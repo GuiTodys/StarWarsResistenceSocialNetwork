@@ -2,9 +2,12 @@ package com.starwars.resistancesocialnetwork.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Builder
 @AllArgsConstructor
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class TradeException extends RuntimeException {
 
     @Builder
