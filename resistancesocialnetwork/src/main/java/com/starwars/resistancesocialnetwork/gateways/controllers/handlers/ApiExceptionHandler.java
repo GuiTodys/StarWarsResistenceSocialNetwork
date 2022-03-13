@@ -2,7 +2,9 @@ package com.starwars.resistancesocialnetwork.gateways.controllers.handlers;
 
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
 import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
+import com.starwars.resistancesocialnetwork.exceptions.TradeException;
 import com.starwars.resistancesocialnetwork.gateways.controllers.response.ErrorResponse;
+import com.starwars.resistancesocialnetwork.gateways.controllers.response.TradeResponse;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,12 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRebelNotFoundException(RebelNotFoundException exception){
         ErrorResponse errorResponse = ErrorResponse.builder().errorsMessage(List.of(exception.getMessage())).build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleTradeException(TradeException exception){
+        ErrorResponse errorResponse = ErrorResponse.builder().errorsMessage(List.of(exception.getMessage())).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     private String mapToErrorMessage(FieldError fieldError){
