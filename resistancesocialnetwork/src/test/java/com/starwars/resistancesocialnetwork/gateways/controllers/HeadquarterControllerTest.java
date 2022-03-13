@@ -151,7 +151,7 @@ class HeadquarterControllerTest {
     }
 
     @Test
-    void updateHeadquarter_when_inform_a_invalid_headquarter_then_throws_exception() throws Exception {
+    void updateHeadquarter_when_inform_a_invalid_headquarter_then_return_not_found() throws Exception {
         Headquarter expectedHeadquarterToUpdate = HeadQuarterDomainBuilder.builder().build().toDomain();
         given(updateService.execute(any(Long.class),any(Headquarter.class)))
                 .willThrow(HeadquarterNotFoundException.class);
