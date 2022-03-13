@@ -55,10 +55,6 @@ class HeadquarterControllerTest {
 
     private final String API_URL_PATH = "/api/v1/headquarters";
 
-    private final HeadquarterRequestMapper headquarterRequestMapper =
-            HeadquarterRequestMapper.INSTANCE;
-    private final HeadquarterResponseMapper headquarterResponseMapper =
-            HeadquarterResponseMapper.INSTANCE;
     private final ObjectMapper mapper = new ObjectMapper();
 
 
@@ -112,6 +108,7 @@ class HeadquarterControllerTest {
         given(createService.execute(any(Headquarter.class))).willReturn(expectedHeadquarterToCreate);
 
         MockHttpServletResponse response = mockMvc.perform(post(API_URL_PATH)
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isCreated())

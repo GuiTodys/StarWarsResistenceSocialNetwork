@@ -31,6 +31,8 @@ public class RebelRequest {
     @NotNull(message = "Gender is required")
     @ApiModelProperty(required = true, value="Rebel's gender", example = "MALE/FEMALE/NOT_DECLARED")
     private Gender gender;
+    @NotNull(message = "The id from the rebel's hq is required!")
+    private Long headquarterId;
     @NotNull(message = "The inventory must be informed")
     @ApiModelProperty(required = true, value="Rebel's inventory list", example = "[\"WEAPON\", \"WATER\"]")
     private List<Item> inventory;

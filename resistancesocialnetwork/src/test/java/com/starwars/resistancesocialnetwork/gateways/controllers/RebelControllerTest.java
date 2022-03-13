@@ -49,7 +49,7 @@ class RebelControllerTest {
     @MockBean
     private RebelUpdateService rebelUpdateService;
     @MockBean
-    private RebelReportService rebelReportService;
+    private RebelReportTraitorService rebelReportService;
 
 
     private final String API_URL_PATH = "/api/v1/rebels";
@@ -187,7 +187,7 @@ class RebelControllerTest {
         given(rebelReportService.execute(expectedRebelToReport.getId()))
                 .willReturn(expectedRebelReported);
 
-        MockHttpServletResponse response = mockMvc.perform(patch(API_URL_PATH + "/report/" + expectedRebelToReport.getId())
+        MockHttpServletResponse response = mockMvc.perform(patch(API_URL_PATH + "/reportTraitor/" + expectedRebelToReport.getId())
                         .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andReturn().getResponse();
