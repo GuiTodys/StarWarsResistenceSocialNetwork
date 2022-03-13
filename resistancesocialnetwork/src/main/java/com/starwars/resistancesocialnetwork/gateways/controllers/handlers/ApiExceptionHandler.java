@@ -26,13 +26,13 @@ public class ApiExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleHeadquarterNotFoundException(HeadquarterNotFoundException exception){
         ErrorResponse errorResponse = ErrorResponse.builder().errorsMessage(List.of(exception.getMessage())).build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleRebelNotFoundException(RebelNotFoundException exception){
         ErrorResponse errorResponse = ErrorResponse.builder().errorsMessage(List.of(exception.getMessage())).build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     private String mapToErrorMessage(FieldError fieldError){
