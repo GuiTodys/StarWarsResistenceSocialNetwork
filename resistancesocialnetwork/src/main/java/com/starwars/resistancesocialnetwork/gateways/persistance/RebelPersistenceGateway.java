@@ -5,6 +5,7 @@ import com.starwars.resistancesocialnetwork.domains.Rebel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RebelPersistenceGateway {
@@ -13,5 +14,6 @@ public interface RebelPersistenceGateway {
     Optional<Rebel> findById(Long id);
     boolean existById(Long id);
     Page<Rebel> findAll(Pageable page);
+    List<Rebel> findAll();
     void deleteById(Long id);
 }
