@@ -1,6 +1,5 @@
 package com.starwars.resistancesocialnetwork.gateways.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starwars.resistancesocialnetwork.builders.domain.RebelDomainBuilder;
 import com.starwars.resistancesocialnetwork.builders.domain.TradeDomainBuilder;
