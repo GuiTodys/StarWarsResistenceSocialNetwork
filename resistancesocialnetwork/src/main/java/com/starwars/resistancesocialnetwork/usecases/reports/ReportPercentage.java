@@ -17,7 +17,8 @@ public class ReportPercentage {
     private final RebelGetService rebelGetService;
 
     public Percentages execute(Pageable page){
-        List<Rebel> rebels = rebelGetService.getAll(page).getContent();
+        List<Rebel> rebels = rebelGetService.getAll();
+
         List<Rebel> traitors = rebels.stream().filter(rebel -> rebel.getTraitor()).collect(Collectors.toList());
         Float traitorsPercentage = Integer.valueOf(traitors.size()).floatValue() / Integer.valueOf(rebels.size()).floatValue() * 100;
 

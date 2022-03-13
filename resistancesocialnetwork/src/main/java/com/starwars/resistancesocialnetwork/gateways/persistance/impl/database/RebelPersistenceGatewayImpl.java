@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -53,6 +55,13 @@ public class RebelPersistenceGatewayImpl implements RebelPersistenceGateway {
         return new PageImpl<>(found.getContent().stream()
                     .map(rebelEntityMapper::toDomain)
                     .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<Rebel> findAll() {
+        List<RebelEntity> rebelEntities = new ArrayList<>(rebelRepository.findAll());
+        List<Rebel> rebels = rebelEntities.stream().map(rebelEntityMapper::toDomain).collect(Collectors.toList());
+        return rebels;
     }
 
     @Override
