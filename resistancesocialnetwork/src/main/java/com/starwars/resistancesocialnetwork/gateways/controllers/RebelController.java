@@ -27,7 +27,7 @@ public class RebelController {
   private final RebelDeleteService rebelDeleteService;
   private final RebelGetService rebelGetService;
   private final RebelUpdateService rebelUpdateService;
-  private final RebelReportService rebelReportService;
+  private final RebelReportTraitorService rebelReportService;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
@@ -74,7 +74,7 @@ public class RebelController {
     rebelDeleteService.execute(id);
   }
 
-  @PatchMapping(value = "/report/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PatchMapping(value = "/reportTraitor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public RebelResponse reportById(@PathVariable("id") Long id){
     Rebel reportedRebel = rebelReportService.execute(id);
