@@ -27,6 +27,5 @@ public class HeadquarterRequest {
     @ApiModelProperty(required = true, value="Headquarters's location coordinates", example = "{45, 29}")
     private Point location;
     @Valid
-    @NotEmpty
     private List<RebelRequest> rebels;
 }
