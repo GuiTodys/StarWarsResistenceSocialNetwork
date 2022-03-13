@@ -21,16 +21,9 @@ import java.util.List;
 @RequestMapping("/api/v1/rebels/")
 public class TradeController {
 
-    private final RebelGetService rebelGetService;
     private final RebelTradeService rebelTradeService;
     private final TradeRequestMapper tradeRequestMapper = TradeRequestMapper.INSTANCE;
     private final TradeResponseMapper tradeResponseMapper = TradeResponseMapper.INSTANCE;
-
-    @GetMapping(value = "{id}/trade}")
-    public List<Item> getInventory(@PathVariable("id") Long id){
-        Rebel found = rebelGetService.getById(id);
-        return found.getInventory();
-    }
 
     @PostMapping(value = "{id}/trade/{target}",
             produces = MediaType.APPLICATION_JSON_VALUE,
