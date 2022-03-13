@@ -4,21 +4,18 @@ import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.domains.Trade;
 import com.starwars.resistancesocialnetwork.domains.enums.Item;
 import com.starwars.resistancesocialnetwork.exceptions.TradeException;
-import com.starwars.resistancesocialnetwork.gateways.controllers.request.ItemRequest;
-import com.starwars.resistancesocialnetwork.gateways.controllers.request.TradeRequest;
 import com.starwars.resistancesocialnetwork.gateways.persistance.RebelPersistenceGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RebelTradeService {
 
     private final RebelGetService rebelGetService;
-    private final RebelPersistenceGateway rebelPersistance;
+    private final RebelPersistenceGateway rebelPersistence;
 
     public Trade execute(Long id, Long target, Trade trade) {
 
@@ -56,8 +53,8 @@ public class RebelTradeService {
         buyer.setInventory(buyerInventory);
         seller.setInventory(sellerInventory);
 
-        rebelPersistance.saveVerifiedRebel(buyer);
-        rebelPersistance.saveVerifiedRebel(seller);
+        rebelPersistence.saveVerifiedRebel(buyer);
+        rebelPersistence.saveVerifiedRebel(seller);
 
         return Trade.builder().buyer(buyerInventory).seller(sellerInventory).build();
 

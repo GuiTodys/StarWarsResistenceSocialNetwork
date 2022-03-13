@@ -1,9 +1,7 @@
 package com.starwars.resistancesocialnetwork.gateways.controllers.mappers.response;
 
-import com.starwars.resistancesocialnetwork.domains.Percentages;
-import com.starwars.resistancesocialnetwork.domains.Rebel;
-import com.starwars.resistancesocialnetwork.gateways.controllers.response.PercentagesResponse;
-import com.starwars.resistancesocialnetwork.gateways.controllers.response.RebelResponse;
+import com.starwars.resistancesocialnetwork.domains.Reports;
+import com.starwars.resistancesocialnetwork.gateways.controllers.response.ReportResponse;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -12,8 +10,8 @@ import org.mapstruct.factory.Mappers;
 public interface PercentagesResponseMapper {
     PercentagesResponseMapper INSTANCE = Mappers.getMapper(PercentagesResponseMapper.class);
 
-    Percentages toDomain(PercentagesResponse percentagesResponse);
+    Reports toDomain(ReportResponse percentagesResponse);
 
     @InheritInverseConfiguration
-    PercentagesResponse toResponse(Percentages percentages);
+    ReportResponse toResponse(Reports percentages);
 }

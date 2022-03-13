@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PercentagesResponse {
+public class ReportResponse {
     private Float traitorsPercentage;
     private Float notTraitorsPercentage;
+    private Integer traitorsPoints;
 }
