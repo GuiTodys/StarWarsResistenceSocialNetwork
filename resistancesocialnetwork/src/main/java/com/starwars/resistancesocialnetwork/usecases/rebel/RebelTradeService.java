@@ -1,29 +1,33 @@
 package com.starwars.resistancesocialnetwork.usecases.rebel;
 
+import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.domains.Trade;
 import com.starwars.resistancesocialnetwork.domains.enums.Item;
 import com.starwars.resistancesocialnetwork.exceptions.TradeException;
-import com.starwars.resistancesocialnetwork.gateways.controllers.request.ItemRequest;
-import com.starwars.resistancesocialnetwork.gateways.controllers.request.TradeRequest;
 import com.starwars.resistancesocialnetwork.gateways.persistance.RebelPersistenceGateway;
+import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterGetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class RebelTradeService {
 
     private final RebelGetService rebelGetService;
-    private final RebelPersistenceGateway rebelPersistance;
+    private final HeadquarterGetService headquarterGetService;
+    private final RebelPersistenceGateway rebelPersistence;
 
     public Trade execute(Long id, Long target, Trade trade) {
 
         Rebel buyer = rebelGetService.getById(id);
         Rebel seller = rebelGetService.getById(target);
+
+        Headquarter buyerHeadquarter = headquarterGetService.getById(buyer.getHeadquarterId());
+        Headquarter sellerHeadquarter = headquarterGetService.getById(seller.getHeadquarterId());
+
         if(buyer.getTraitor() || seller.getTraitor()){
             throw new TradeException("Not Allowed trade with Traitors");
         }
@@ -56,8 +60,8 @@ public class RebelTradeService {
         buyer.setInventory(buyerInventory);
         seller.setInventory(sellerInventory);
 
-        rebelPersistance.saveVerifiedRebel(buyer);
-        rebelPersistance.saveVerifiedRebel(seller);
+        rebelPersistence.save(buyer, buyerHeadquarter);
+        rebelPersistence.save(seller, sellerHeadquarter);
 
         return Trade.builder().buyer(buyerInventory).seller(sellerInventory).build();
 
