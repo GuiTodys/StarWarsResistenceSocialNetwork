@@ -10,6 +10,7 @@ import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterGetS
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,32 +25,26 @@ public class RebelTradeService {
 
         Rebel buyer = rebelGetService.getById(id);
         Rebel seller = rebelGetService.getById(target);
-
         Headquarter buyerHeadquarter = headquarterGetService.getById(buyer.getHeadquarterId());
         Headquarter sellerHeadquarter = headquarterGetService.getById(seller.getHeadquarterId());
 
         if(buyer.getTraitor() || seller.getTraitor()){
             throw new TradeException("Not Allowed trade with Traitors");
         }
+        validateRebelsItemsContent(trade.getBuyer(), buyer.getInventory());
+        validateRebelsItemsContent(trade.getSeller(), seller.getInventory());
+        verifyTradePrice(trade);
+        swapItems(trade,buyer,seller);
 
-        List<Item> buyerInventory = buyer.getInventory();
-        List<Item> sellerInventory = seller.getInventory();
+        rebelPersistence.save(buyer, buyerHeadquarter);
+        rebelPersistence.save(seller, sellerHeadquarter);
 
-        boolean buyerIsValid = buyerInventory.containsAll(trade.getBuyer());
-        boolean sellerIsValid = sellerInventory.containsAll(trade.getSeller());
+        return Trade.builder().buyer(buyer.getInventory()).seller(seller.getInventory()).build();
+    }
 
-        if(!(buyerIsValid  && sellerIsValid)){
-            throw new TradeException("Trade not Allowed");
-        }
-        Integer buyerPrice = trade.getBuyer().stream().map(Item::getValue)
-                .reduce(0, (acc, cur) -> cur);
-
-        Integer sellerPrice = trade.getBuyer().stream().map(Item::getValue)
-                .reduce(0, (acc, cur) -> cur);
-
-        if(!buyerPrice.equals(sellerPrice)){
-            throw new TradeException("Trade not Allowed: incompatible values");
-        }
+    private void swapItems(Trade trade, Rebel buyer,Rebel seller){
+        List<Item> buyerInventory = new ArrayList<>(buyer.getInventory());
+        List<Item> sellerInventory = new ArrayList<>(seller.getInventory());
 
         buyerInventory.removeAll(trade.getBuyer());
         sellerInventory.removeAll(trade.getSeller());
@@ -59,11 +54,23 @@ public class RebelTradeService {
 
         buyer.setInventory(buyerInventory);
         seller.setInventory(sellerInventory);
+    }
 
-        rebelPersistence.save(buyer, buyerHeadquarter);
-        rebelPersistence.save(seller, sellerHeadquarter);
+    private void verifyTradePrice(Trade trade) {
+        Integer buyerPrice = trade.getBuyer().stream().map(Item::getValue)
+                .reduce(0, Integer::sum);
 
-        return Trade.builder().buyer(buyerInventory).seller(sellerInventory).build();
+        Integer sellerPrice = trade.getSeller().stream().map(Item::getValue)
+                .reduce(0, Integer::sum);
 
+        if(!buyerPrice.equals(sellerPrice)){
+            throw new TradeException("Trade not Allowed: incompatible values");
+        }
+    }
+
+    private void validateRebelsItemsContent(List<Item> tradeList, List<Item> traderInventory) {
+        if(!traderInventory.containsAll(tradeList)){
+            throw new TradeException("Trade not Allowed");
+        }
     }
 }
