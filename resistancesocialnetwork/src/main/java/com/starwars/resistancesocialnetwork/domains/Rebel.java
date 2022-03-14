@@ -25,7 +25,6 @@ public class Rebel {
     private Gender gender;
     private Long headquarterId;
     private List<Item> inventory;
-//    private HashMap<Enum, Integer> inventory2;
     @Builder.Default
     private Integer reports = 0;
     @Builder.Default
