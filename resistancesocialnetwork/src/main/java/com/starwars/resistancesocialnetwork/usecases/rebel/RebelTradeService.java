@@ -21,7 +21,7 @@ public class RebelTradeService {
     private final RebelGetService rebelGetService;
     private final HeadquarterGetService headquarterGetService;
     private final RebelPersistenceGateway rebelPersistence;
-    private final RebelUtils rebelUtils;
+    private final RebelUtils rebelUtils = new RebelUtils();
 
     public Trade execute(Long id, Long target, Trade trade) {
 

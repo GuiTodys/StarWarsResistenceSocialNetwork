@@ -15,12 +15,12 @@ import java.util.List;
 public class ReportReportsService {
 
     private final RebelGetService rebelGetService;
-    private final RebelUtils rebelUtils;
+    private final RebelUtils rebelUtils = new RebelUtils();
 
     public Reports execute(){
         List<Rebel> rebels = rebelGetService.getAll();
-        List<Rebel> traitors = rebelUtils.getTraitors();
-        List<Rebel> notTraitors = rebelUtils.getNotTraitors();
+        List<Rebel> traitors = rebelUtils.getTraitors(rebels);
+        List<Rebel> notTraitors = rebelUtils.getNotTraitors(rebels);
 
         Float traitorsPercentage = rebelUtils.intToFloat(traitors.size()) / rebelUtils.intToFloat(rebels.size()) * 100;
         Float notTraitorsPercentage = rebelUtils.intToFloat(notTraitors.size()) / rebelUtils.intToFloat(rebels.size()) * 100;

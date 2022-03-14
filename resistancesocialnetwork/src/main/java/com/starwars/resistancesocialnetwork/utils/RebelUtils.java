@@ -2,26 +2,19 @@ package com.starwars.resistancesocialnetwork.utils;
 
 import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.domains.enums.Item;
-import com.starwars.resistancesocialnetwork.usecases.rebel.RebelGetService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor
 public class RebelUtils {
 
-    private final RebelGetService rebelGetService;
-
-    public List<Rebel> getTraitors(){
-        return rebelGetService.getAll().stream().filter(rebel -> rebel.getTraitor()).collect(Collectors.toList());
+    public List<Rebel> getTraitors(List<Rebel> rebels){
+        return rebels.stream().filter(rebel -> rebel.getTraitor()).collect(Collectors.toList());
     }
 
-    public List<Rebel> getNotTraitors(){
-        return rebelGetService.getAll().stream().filter(rebel -> !rebel.getTraitor()).collect(Collectors.toList());
+    public List<Rebel> getNotTraitors(List<Rebel> rebels){
+        return rebels.stream().filter(rebel -> !rebel.getTraitor()).collect(Collectors.toList());
     }
 
     public Float intToFloat(int i){
