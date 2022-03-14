@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -23,7 +25,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class RebelLocationUpdateServiceTest {
 
     @Mock
@@ -86,7 +88,7 @@ class RebelLocationUpdateServiceTest {
     void execute_when_informed_valid_id_and_invalid_headquarter_then_throws_exception() {
         //given
         Rebel rebel = RebelDomainBuilder.builder().build().toDomain();
-        Headquarter headquarter = HeadQuarterDomainBuilder.builder().id(5L).name("").build().toDomain();
+        Headquarter headquarter = HeadQuarterDomainBuilder.builder().name("").build().toDomain();
 
         //when
         Mockito.when(headQuartersPersistence.findByName(headquarter.getName()))

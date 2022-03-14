@@ -36,15 +36,15 @@ public class RebelLocationUpdateService {
         }
     }
 
-    private Headquarter createNewHeadquarter(Headquarter headquarterToCreae){
-        Set<ConstraintViolation<Headquarter>> violations = validator.validate(headquarterToCreae);
+    private Headquarter createNewHeadquarter(Headquarter headquarterToCreate){
+        Set<ConstraintViolation<Headquarter>> violations = validator.validate(headquarterToCreate);
         if (!violations.isEmpty()) {
 //            StringBuilder stringBuilder = new StringBuilder();
 //            for (ConstraintViolation<Headquarter> constraintViolation : violations) {
 //                stringBuilder.append(constraintViolation.getMessage());
 //            }
-            throw new HeadquarterValidationException(violations);
+            throw HeadquarterValidationException.builder().violations(violations).build();
         }
-        return headQuartersPersistence.save(headquarterToCreae);
+        return headQuartersPersistence.save(headquarterToCreate);
     }
 }
