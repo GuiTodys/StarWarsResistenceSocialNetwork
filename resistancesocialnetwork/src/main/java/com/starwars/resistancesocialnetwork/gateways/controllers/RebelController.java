@@ -1,8 +1,11 @@
 package com.starwars.resistancesocialnetwork.gateways.controllers;
 
+import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
+import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.request.HeadquarterRequestMapper;
 import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.request.RebelRequestMapper;
 import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.response.RebelResponseMapper;
+import com.starwars.resistancesocialnetwork.gateways.controllers.request.HeadquarterRequest;
 import com.starwars.resistancesocialnetwork.gateways.controllers.request.RebelRequest;
 import com.starwars.resistancesocialnetwork.gateways.controllers.response.RebelResponse;
 import com.starwars.resistancesocialnetwork.usecases.rebel.*;
@@ -23,10 +26,12 @@ import java.util.stream.Collectors;
 public class RebelController {
   private final RebelRequestMapper rebelRequestMapper = RebelRequestMapper.INSTANCE;
   private final RebelResponseMapper rebelResponseMapper = RebelResponseMapper.INSTANCE;
+  private final HeadquarterRequestMapper headquarterRequestMapper = HeadquarterRequestMapper.INSTANCE;
   private final RebelCreateService rebelCreateService;
   private final RebelDeleteService rebelDeleteService;
   private final RebelGetService rebelGetService;
   private final RebelUpdateService rebelUpdateService;
+  private final RebelLocationUpdateService rebelLocationUpdateService;
   private final RebelReportTraitorService rebelReportService;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,6 +79,7 @@ public class RebelController {
     rebelDeleteService.execute(id);
   }
 
+
   @PatchMapping(value = "/reportTraitor/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public RebelResponse reportById(@PathVariable("id") Long id){
@@ -81,4 +87,11 @@ public class RebelController {
     return rebelResponseMapper.toResponse(reportedRebel);
   }
 
+  @PatchMapping(value = "/updateLocation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public RebelResponse updateHeadquarter(@PathVariable("id") Long id, @RequestBody HeadquarterRequest headquarterRequest){
+    Headquarter headquarter = headquarterRequestMapper.toDomain(headquarterRequest);
+    Rebel updatedRebel = rebelLocationUpdateService.execute(id, headquarter);
+    return rebelResponseMapper.toResponse(updatedRebel);
+  }
 }

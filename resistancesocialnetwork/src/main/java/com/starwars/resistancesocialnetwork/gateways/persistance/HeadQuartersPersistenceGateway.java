@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface HeadQuartersPersistenceGateway {
     Headquarter save(Headquarter headquarter);
     Optional<Headquarter> findById(Long id);
+    Optional<Headquarter> findByName(String name);
     boolean existById(Long id);
     Page<Headquarter> findAll(Pageable page);
     void deleteById(Long id);
