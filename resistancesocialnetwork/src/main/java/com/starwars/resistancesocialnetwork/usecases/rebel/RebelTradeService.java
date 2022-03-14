@@ -7,6 +7,7 @@ import com.starwars.resistancesocialnetwork.domains.enums.Item;
 import com.starwars.resistancesocialnetwork.exceptions.TradeException;
 import com.starwars.resistancesocialnetwork.gateways.persistance.RebelPersistenceGateway;
 import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterGetService;
+import com.starwars.resistancesocialnetwork.utils.RebelUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class RebelTradeService {
     private final RebelGetService rebelGetService;
     private final HeadquarterGetService headquarterGetService;
     private final RebelPersistenceGateway rebelPersistence;
+    private final RebelUtils rebelUtils;
 
     public Trade execute(Long id, Long target, Trade trade) {
 
@@ -57,11 +59,8 @@ public class RebelTradeService {
     }
 
     private void verifyTradePrice(Trade trade) {
-        Integer buyerPrice = trade.getBuyer().stream().map(Item::getValue)
-                .reduce(0, Integer::sum);
-
-        Integer sellerPrice = trade.getSeller().stream().map(Item::getValue)
-                .reduce(0, Integer::sum);
+        Integer buyerPrice = rebelUtils.sumOfItemsPoints(trade.getBuyer());
+        Integer sellerPrice = rebelUtils.sumOfItemsPoints(trade.getSeller());
 
         if(!buyerPrice.equals(sellerPrice)){
             throw new TradeException("Trade not Allowed: incompatible values");
