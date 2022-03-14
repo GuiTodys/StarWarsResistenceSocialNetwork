@@ -4,6 +4,7 @@ import com.starwars.resistancesocialnetwork.domains.ItemsPerRebel;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.domains.enums.Item;
 import com.starwars.resistancesocialnetwork.usecases.rebel.RebelGetService;
+import com.starwars.resistancesocialnetwork.utils.RebelUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +17,22 @@ import java.util.stream.Collectors;
 public class ReportItemsPerRebelService {
 
     private final RebelGetService rebelGetService;
+    private final RebelUtils rebelUtils;
 
     public ItemsPerRebel execute() {
-        List<Rebel> rebels = rebelGetService.getAll().stream().filter(rebel -> !rebel.getTraitor()).collect(Collectors.toList());
+        List<Rebel> rebels = rebelUtils.getNotTraitors();
 
-        List<Item> rebelItems = new ArrayList<>();
-
-        rebels.stream().map(rebel -> rebel.getInventory()).forEach(inventory -> rebelItems.addAll(inventory));
+        List<Item> rebelItems = rebelUtils.getAllNotTraitorsItems(rebels);
 
         List<Item> filteredByWeapon = rebelItems.stream().filter(item -> item==Item.WEAPON).collect(Collectors.toList());
         List<Item> filteredByAmmo = rebelItems.stream().filter(item -> item==Item.AMMO).collect(Collectors.toList());
         List<Item> filteredByWater = rebelItems.stream().filter(item -> item==Item.WATER).collect(Collectors.toList());
         List<Item> filteredByFood = rebelItems.stream().filter(item -> item==Item.FOOD).collect(Collectors.toList());
 
-        Float weaponPerRebel = Integer.valueOf(filteredByWeapon.size()).floatValue()/Integer.valueOf(rebels.size()).floatValue();
-        Float ammoPerRebel = Integer.valueOf(filteredByAmmo.size()).floatValue()/Integer.valueOf(rebels.size()).floatValue();
-        Float waterPerRebel = Integer.valueOf(filteredByWater.size()).floatValue()/Integer.valueOf(rebels.size()).floatValue();
-        Float foodPerRebel = Integer.valueOf(filteredByFood.size()).floatValue()/Integer.valueOf(rebels.size()).floatValue();
+        Float weaponPerRebel = rebelUtils.intToFloat(filteredByWeapon.size())/rebelUtils.intToFloat(rebels.size());
+        Float ammoPerRebel = rebelUtils.intToFloat(filteredByAmmo.size())/rebelUtils.intToFloat(rebels.size());
+        Float waterPerRebel = rebelUtils.intToFloat(filteredByWater.size())/rebelUtils.intToFloat(rebels.size());
+        Float foodPerRebel = rebelUtils.intToFloat(filteredByFood.size())/rebelUtils.intToFloat(rebels.size());
 
         return ItemsPerRebel.builder().weaponsPerRebel(weaponPerRebel).ammoPerRebel(ammoPerRebel).waterPerRebel(waterPerRebel).foodPerRebel(foodPerRebel).build();
     }
