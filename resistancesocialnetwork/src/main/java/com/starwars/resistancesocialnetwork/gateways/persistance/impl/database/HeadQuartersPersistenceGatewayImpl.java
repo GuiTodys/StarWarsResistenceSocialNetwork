@@ -35,6 +35,12 @@ public class HeadQuartersPersistenceGatewayImpl implements HeadQuartersPersisten
     }
 
     @Override
+    public Optional<Headquarter> findByName(String name) {
+        Optional<HeadquarterEntity> foundHeadquarter = headQuarterRepository.getByName(name);
+        return foundHeadquarter.map(headquarterEntityMapper::toDomain);
+    }
+
+    @Override
     public boolean existById(Long id) {
     return headQuarterRepository.existsById(id);
     }
