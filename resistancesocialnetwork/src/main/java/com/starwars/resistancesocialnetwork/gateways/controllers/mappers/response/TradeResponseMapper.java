@@ -11,8 +11,5 @@ import org.mapstruct.factory.Mappers;
 public interface TradeResponseMapper {
     TradeResponseMapper INSTANCE = Mappers.getMapper(TradeResponseMapper.class);
 
-    Trade toDomain(TradeResponse tradeResponse);
-
-    @InheritInverseConfiguration
     TradeResponse toResponse(Trade trade);
 }

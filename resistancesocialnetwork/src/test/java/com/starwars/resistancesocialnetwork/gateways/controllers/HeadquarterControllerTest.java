@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starwars.resistancesocialnetwork.builders.domain.HeadQuarterDomainBuilder;
 import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
-import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.request.HeadquarterRequestMapper;
-import com.starwars.resistancesocialnetwork.gateways.controllers.mappers.response.HeadquarterResponseMapper;
 import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterCreateService;
 import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterDeleteService;
 import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterGetService;

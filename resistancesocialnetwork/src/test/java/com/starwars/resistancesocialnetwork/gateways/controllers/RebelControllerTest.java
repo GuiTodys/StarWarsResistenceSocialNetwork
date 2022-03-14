@@ -5,8 +5,11 @@ import com.starwars.resistancesocialnetwork.builders.domain.HeadQuarterDomainBui
 import com.starwars.resistancesocialnetwork.builders.domain.RebelDomainBuilder;
 import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
+import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
+import com.starwars.resistancesocialnetwork.exceptions.HeadquarterValidationException;
 import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
 import com.starwars.resistancesocialnetwork.usecases.rebel.*;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,9 +40,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class RebelControllerTest {
+    private final String API_URL_PATH = "/api/v1/rebels";
+    private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private RebelCreateService rebelCreateService;
     @MockBean
@@ -50,11 +54,8 @@ class RebelControllerTest {
     private RebelUpdateService rebelUpdateService;
     @MockBean
     private RebelReportTraitorService rebelReportService;
-
-
-    private final String API_URL_PATH = "/api/v1/rebels";
-    private final ObjectMapper mapper = new ObjectMapper();
-
+    @MockBean
+    private RebelLocationUpdateService rebelLocationService;
 
     @Test
     void getRebelById_should_return_rebel_when_informed_a_valid_id() throws Exception {
@@ -195,14 +196,69 @@ class RebelControllerTest {
         Assertions.assertThat(response.getContentAsString())
                 .isEqualTo(mapper.writeValueAsString(expectedRebelReported));
     }
+
     @Test
     void reportById_when_informed_invalid_id_then_return_not_found() throws Exception {
         Rebel expectedRebelToReport = RebelDomainBuilder.builder().build().toDomain();
         doThrow(RebelNotFoundException.class).when(rebelReportService)
                 .execute(expectedRebelToReport.getId());
         mockMvc.perform(patch(API_URL_PATH + "/report/" + expectedRebelToReport.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                ).andExpect(status().isNotFound());
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
+    }
 
+    @Test
+    void updateHeadquarter_when_informed_valid_headquarter_then_update_location() throws Exception {
+        Rebel expectedRebelToPatch = RebelDomainBuilder.builder().build().toDomain();
+        Headquarter expectedHeadQuarter = HeadQuarterDomainBuilder.builder().id(5L).build().toDomain();
+        Rebel expectedPatchedRebel = RebelDomainBuilder.builder()
+                .headquarterId(expectedHeadQuarter.getId()).build().toDomain();
+        String jsonRequest = mapper.writeValueAsString(expectedHeadQuarter);
+
+        given(rebelLocationService.execute(any(Long.class), any(Headquarter.class)))
+                .willReturn(expectedPatchedRebel);
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        patch(API_URL_PATH + "/updateLocation/" + expectedRebelToPatch.getId())
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonRequest)
+                ).andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        Assertions.assertThat(response.getContentAsString())
+                .isEqualTo(mapper.writeValueAsString(expectedPatchedRebel));
+    }
+
+    @Test
+    void updateHeadquarter_when_informed_invalid_headquarter_then_return_not_found() throws Exception {
+        Rebel expectedRebelToPatch = RebelDomainBuilder.builder().build().toDomain();
+        Headquarter expectedHeadQuarter = HeadQuarterDomainBuilder.builder().build().toDomain();
+        String jsonRequest = mapper.writeValueAsString(expectedHeadQuarter);
+
+        doThrow(HeadquarterNotFoundException.class).when(rebelLocationService)
+                .execute(any(Long.class), any(Headquarter.class));
+
+        mockMvc.perform(patch(API_URL_PATH + "/updateLocation/" + expectedRebelToPatch.getId())
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonRequest)
+                ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void updateHeadquarter_when_informed_invalid_field_headquarter_then_return_bad_request() throws Exception {
+        Rebel expectedRebelToPatch = RebelDomainBuilder.builder().build().toDomain();
+        Headquarter expectedHeadQuarter = HeadQuarterDomainBuilder.builder().name("").build().toDomain();
+        String jsonRequest = mapper.writeValueAsString(expectedHeadQuarter);
+
+        doThrow(HeadquarterValidationException.class).when(rebelLocationService)
+                .execute(any(Long.class),any(Headquarter.class));
+
+        mockMvc.perform(patch(API_URL_PATH + "/updateLocation/" + expectedRebelToPatch.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonRequest)
+        ).andExpect(status().isBadRequest());
     }
 }

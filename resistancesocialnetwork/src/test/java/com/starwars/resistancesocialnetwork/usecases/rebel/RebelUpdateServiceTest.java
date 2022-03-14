@@ -8,7 +8,6 @@ import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundExcept
 import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
 import com.starwars.resistancesocialnetwork.gateways.persistance.HeadQuartersPersistenceGateway;
 import com.starwars.resistancesocialnetwork.gateways.persistance.RebelPersistenceGateway;
-import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterUpdateService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

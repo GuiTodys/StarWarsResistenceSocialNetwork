@@ -1,8 +1,7 @@
-package com.starwars.resistancesocialnetwork.builders.domain;
+package com.starwars.resistancesocialnetwork.builders.request;
 
-import com.starwars.resistancesocialnetwork.domains.Headquarter;
-import com.starwars.resistancesocialnetwork.domains.Rebel;
 import com.starwars.resistancesocialnetwork.gateways.controllers.request.HeadquarterRequest;
+import com.starwars.resistancesocialnetwork.gateways.controllers.request.RebelRequest;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.geo.Point;
@@ -11,20 +10,17 @@ import java.util.List;
 
 @Data
 @Builder
-public class HeadQuarterDomainBuilder {
-    @Builder.Default
-    private Long id = 1L;
+public class HeadQuarterRequestBuilder {
     @Builder.Default
     private String name = "Pandora";
     @Builder.Default
     private Point location = new Point(10,50);
     @Builder.Default
-    private List<Rebel> rebels = List.of(
-            RebelDomainBuilder.builder().build().toDomain());
+    private List<RebelRequest> rebels = List.of(
+            RebelRequestBuilder.builder().build().toRequest());
 
-    public Headquarter toDomain(){
-        return Headquarter.builder()
-                .id(id)
+    public HeadquarterRequest toRequest(){
+        return HeadquarterRequest.builder()
                 .name(name)
                 .location(location)
                 .rebels(rebels)

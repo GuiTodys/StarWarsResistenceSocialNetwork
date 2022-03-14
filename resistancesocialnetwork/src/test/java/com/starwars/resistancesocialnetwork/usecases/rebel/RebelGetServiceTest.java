@@ -1,14 +1,9 @@
 package com.starwars.resistancesocialnetwork.usecases.rebel;
 
-import com.starwars.resistancesocialnetwork.builders.domain.HeadQuarterDomainBuilder;
 import com.starwars.resistancesocialnetwork.builders.domain.RebelDomainBuilder;
-import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.domains.Rebel;
-import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
 import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
-import com.starwars.resistancesocialnetwork.gateways.persistance.HeadQuartersPersistenceGateway;
 import com.starwars.resistancesocialnetwork.gateways.persistance.RebelPersistenceGateway;
-import com.starwars.resistancesocialnetwork.usecases.headquarter.HeadquarterGetService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,6 +56,21 @@ class RebelGetServiceTest {
         Page<Rebel> results = getService.getAll(expectedPagination);
 
         assertThat(results.getContent()).isEqualTo(rebels);
+    }
+
+    @Test
+    void getAll_when_require_a_list_of_rebels_they_should_return_with_success() {
+        //given
+        Rebel expectedRebel = RebelDomainBuilder.builder().build().toDomain();
+        List<Rebel> rebels = List.of(expectedRebel);
+
+        //when
+        Mockito.when(rebelPersistance.findAll()).thenReturn(rebels);
+
+        //then
+        List<Rebel> results = getService.getAll();
+
+        assertThat(results).isEqualTo(rebels);
     }
 
     @Test

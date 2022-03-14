@@ -36,5 +36,4 @@ public class RebelRequest {
     @NotNull(message = "The inventory must be informed")
     @ApiModelProperty(required = true, value="Rebel's inventory list", example = "[\"WEAPON\", \"WATER\"]")
     private List<Item> inventory;
-//    private Map<Enum,Integer> inventory2;
 }

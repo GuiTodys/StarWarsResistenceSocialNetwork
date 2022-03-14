@@ -13,7 +13,4 @@ public interface TradeRequestMapper {
     TradeRequestMapper INSTANCE = Mappers.getMapper(TradeRequestMapper.class);
 
     Trade toDomain(TradeRequest tradeRequest);
-
-    @InheritInverseConfiguration
-    TradeRequest toRequest(Trade trade);
 }

@@ -3,7 +3,6 @@ package com.starwars.resistancesocialnetwork.usecases.headquarter;
 import com.starwars.resistancesocialnetwork.builders.domain.HeadQuarterDomainBuilder;
 import com.starwars.resistancesocialnetwork.domains.Headquarter;
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
-import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
 import com.starwars.resistancesocialnetwork.gateways.persistance.HeadQuartersPersistenceGateway;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

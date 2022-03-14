@@ -1,6 +1,7 @@
 package com.starwars.resistancesocialnetwork.gateways.controllers.handlers;
 
 import com.starwars.resistancesocialnetwork.exceptions.HeadquarterNotFoundException;
+import com.starwars.resistancesocialnetwork.exceptions.HeadquarterValidationException;
 import com.starwars.resistancesocialnetwork.exceptions.RebelNotFoundException;
 import com.starwars.resistancesocialnetwork.exceptions.TradeException;
 import com.starwars.resistancesocialnetwork.gateways.controllers.response.ErrorResponse;
@@ -39,6 +40,12 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleTradeException(TradeException exception){
+        ErrorResponse errorResponse = ErrorResponse.builder().errorsMessage(List.of(exception.getMessage())).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleHeadquarterValidationException(HeadquarterValidationException exception){
         ErrorResponse errorResponse = ErrorResponse.builder().errorsMessage(List.of(exception.getMessage())).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
