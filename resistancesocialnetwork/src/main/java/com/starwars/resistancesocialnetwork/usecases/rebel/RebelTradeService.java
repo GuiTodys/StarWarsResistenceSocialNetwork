@@ -63,13 +63,13 @@ public class RebelTradeService {
         Integer sellerPrice = rebelUtils.sumOfItemsPoints(trade.getSeller());
 
         if(!buyerPrice.equals(sellerPrice)){
-            throw new TradeException("Trade not Allowed: incompatible values");
+            throw TradeException.builder().message("Trade not Allowed: incompatible values").build();
         }
     }
 
     private void validateRebelsItemsContent(List<Item> tradeList, List<Item> traderInventory) {
         if(!traderInventory.containsAll(tradeList)){
-            throw new TradeException("Trade not Allowed");
+            throw TradeException.builder().message("Trade not Allowed").build();
         }
     }
 }

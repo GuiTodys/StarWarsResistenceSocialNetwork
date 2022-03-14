@@ -10,6 +10,8 @@ import com.starwars.resistancesocialnetwork.gateways.controllers.request.RebelRe
 import com.starwars.resistancesocialnetwork.gateways.controllers.response.RebelResponse;
 import com.starwars.resistancesocialnetwork.usecases.rebel.*;
 import lombok.AllArgsConstructor;
+import org.hibernate.validator.internal.engine.validationcontext.ValidationContext;
+import org.springframework.boot.context.properties.bind.validation.ValidationErrors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -89,7 +91,9 @@ public class RebelController {
 
   @PatchMapping(value = "/updateLocation/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public RebelResponse updateHeadquarter(@PathVariable("id") Long id, @RequestBody HeadquarterRequest headquarterRequest){
+  public RebelResponse updateHeadquarter(
+          @PathVariable("id") Long id,
+          @Valid @RequestBody HeadquarterRequest headquarterRequest){
     Headquarter headquarter = headquarterRequestMapper.toDomain(headquarterRequest);
     Rebel updatedRebel = rebelLocationUpdateService.execute(id, headquarter);
     return rebelResponseMapper.toResponse(updatedRebel);
