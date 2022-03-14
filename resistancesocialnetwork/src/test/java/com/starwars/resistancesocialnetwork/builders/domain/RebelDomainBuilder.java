@@ -24,6 +24,10 @@ public class RebelDomainBuilder {
     private Long headquarterId = 1L;
     @Builder.Default
     private List<Item> inventory = List.of(Item.WATER);
+    @Builder.Default
+    private Integer reports = 0;
+    @Builder.Default
+    private Boolean traitor = false;
 
     public Rebel toDomain(){
         return Rebel.builder()
@@ -33,6 +37,8 @@ public class RebelDomainBuilder {
                 .gender(gender)
                 .headquarterId(headquarterId)
                 .inventory(inventory)
+                .traitor(traitor)
+                .reports(reports)
                 .build();
     }
 
