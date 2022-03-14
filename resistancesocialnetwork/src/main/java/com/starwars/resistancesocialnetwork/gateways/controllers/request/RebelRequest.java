@@ -29,11 +29,11 @@ public class RebelRequest {
     @ApiModelProperty(required = true, value="Rebel's age", example = "18")
     private Integer age;
     @NotNull(message = "Gender is required")
-    @ApiModelProperty(required = true, value="Rebel's gender", example = "MALE/FEMALE/NOT_DECLARED")
+    @ApiModelProperty(required = true, value="Rebel's gender")
     private Gender gender;
     @NotNull(message = "The id from the rebel's hq is required!")
     private Long headquarterId;
     @NotNull(message = "The inventory must be informed")
-    @ApiModelProperty(required = true, value="Rebel's inventory list", example = "[\"WEAPON\", \"WATER\"]")
+    @ApiModelProperty(required = true, value="Rebel's inventory list")
     private List<Item> inventory;
 }

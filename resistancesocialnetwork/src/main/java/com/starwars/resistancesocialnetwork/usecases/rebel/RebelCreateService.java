@@ -16,7 +16,7 @@ public class RebelCreateService {
 
     public Rebel execute(Rebel rebel){
         Long headquarterId = rebel.getHeadquarterId();
-        Headquarter headquarter = headQuartersPersistence.findById(headquarterId).orElseThrow(() -> HeadquarterNotFoundException.builder().message("Headquarter not found by" + headquarterId).build());
+        Headquarter headquarter = headQuartersPersistence.findById(headquarterId).orElseThrow(() -> HeadquarterNotFoundException.builder().message("Headquarter not found by Id: " + headquarterId).build());
         return rebelPersistence.save(rebel, headquarter);
     }
 }
